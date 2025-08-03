@@ -1,13 +1,15 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Header } from "@/components/Header";
-import { FilterSidebar } from "@/components/FilterSidebar";
+import { FilterModal } from "@/components/FilterModal";
 import { ProductGrid } from "@/components/ProductGrid";
+import { Hero } from "@/components/Hero";
+import { Footer } from "@/components/Footer";
 import { mockProducts, getFilteredProducts } from "@/data/mockProducts";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [bookmarkedProducts, setBookmarkedProducts] = useState<Set<string>>(new Set());
   const [displayedCount, setDisplayedCount] = useState(12);
   const [loading, setLoading] = useState(false);
@@ -64,53 +66,49 @@ const Index = () => {
     setDisplayedCount(12);
   }, [filters, searchTerm]);
 
+  const productsRef = useRef<HTMLDivElement>(null);
+  
+  const scrollToProducts = () => {
+    productsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-[var(--gradient-background)]">
       <Header
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        onMenuClick={() => setSidebarOpen(true)}
+        onMenuClick={() => setFilterModalOpen(true)}
         dealsCount={mockProducts.length}
       />
       
-      <div className="flex">
-        <FilterSidebar
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          selectedFilters={filters}
-          onFilterChange={setFilters}
-        />
-        
-        <main className="flex-1 p-6 lg:ml-0">
-          <div className="container mx-auto max-w-7xl">
-            {/* Hero Section */}
-            <div className="text-center mb-12 py-8">
-              <h1 className="text-4xl lg:text-6xl font-bold gradient-text mb-4">
-                🔥 Hot Deals Aggregator
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Discover the best discounts from Amazon, Walmart, eBay and more. 
-                All in one place, updated in real-time.
-              </p>
-              <div className="mt-8 flex items-center justify-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
-                  <span>Live Updates</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                  <span>Verified Deals</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-warning animate-pulse"></div>
-                  <span>Price Tracking</span>
-                </div>
+      {/* Hero Section */}
+      <Hero onExploreDeals={scrollToProducts} />
+      
+      <main className="px-6">
+        <div className="container mx-auto max-w-7xl">
+          {/* Filter Bar & Results Summary */}
+          <div ref={productsRef} className="mb-8 space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">
+                  {searchTerm ? `Search Results for "${searchTerm}"` : "Today's Hot Deals"}
+                </h2>
+                <p className="text-muted-foreground">
+                  {filteredProducts.length} deals found • Updated minutes ago
+                </p>
               </div>
+              
+              <FilterModal
+                selectedFilters={filters}
+                onFilterChange={setFilters}
+                isOpen={filterModalOpen}
+                onOpenChange={setFilterModalOpen}
+              />
             </div>
 
             {/* Results Summary */}
             {(searchTerm || filters.categories.length > 0 || filters.sources.length > 0 || filters.discountMin > 0 || filters.rating > 0) && (
-              <div className="mb-6 p-4 bg-card rounded-xl border border-card-border">
+              <div className="p-4 bg-card rounded-xl border border-card-border">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-medium">{filteredProducts.length} deals found</span>
@@ -128,19 +126,22 @@ const Index = () => {
                 </div>
               </div>
             )}
-
-            {/* Product Grid */}
-            <ProductGrid
-              products={displayedProducts}
-              bookmarkedProducts={bookmarkedProducts}
-              onBookmark={handleBookmark}
-              loading={loading}
-              onLoadMore={handleLoadMore}
-              hasMore={hasMore}
-            />
           </div>
-        </main>
-      </div>
+
+          {/* Product Grid */}
+          <ProductGrid
+            products={displayedProducts}
+            bookmarkedProducts={bookmarkedProducts}
+            onBookmark={handleBookmark}
+            loading={loading}
+            onLoadMore={handleLoadMore}
+            hasMore={hasMore}
+          />
+        </div>
+      </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

@@ -1,12 +1,11 @@
 import { Filter, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
 
-interface FilterSidebarProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface FilterModalProps {
   selectedFilters: {
     categories: string[];
     sources: string[];
@@ -15,6 +14,8 @@ interface FilterSidebarProps {
     rating: number;
   };
   onFilterChange: (filters: any) => void;
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 const categories = [
@@ -24,7 +25,7 @@ const categories = [
 
 const sources = ["Amazon", "Walmart", "eBay", "Target", "Best Buy"];
 
-export const FilterSidebar = ({ isOpen, onClose, selectedFilters, onFilterChange }: FilterSidebarProps) => {
+export const FilterModal = ({ selectedFilters, onFilterChange, isOpen, onOpenChange }: FilterModalProps) => {
   const [openSections, setOpenSections] = useState({
     categories: true,
     sources: true,
@@ -70,59 +71,48 @@ export const FilterSidebar = ({ isOpen, onClose, selectedFilters, onFilterChange
     (selectedFilters.rating > 0 ? 1 : 0);
 
   return (
-    <>
-      {/* Mobile Overlay */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
-          onClick={onClose}
-        />
-      )}
-
-      {/* Sidebar */}
-      <div className={`
-        fixed lg:sticky top-0 left-0 h-screen w-80 bg-card border-r border-card-border z-50
-        transform transition-transform duration-300 ease-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        overflow-y-auto
-      `}>
-        <div className="p-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <Button 
+          variant="outline" 
+          className="filter-button relative"
+        >
+          <Filter className="w-4 h-4 mr-2" />
+          Filters
+          {activeFiltersCount > 0 && (
+            <Badge 
+              variant="secondary" 
+              className="ml-2 px-1.5 py-0.5 text-xs bg-primary text-primary-foreground"
+            >
+              {activeFiltersCount}
+            </Badge>
+          )}
+        </Button>
+      </DialogTrigger>
+      
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Filter className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold">Filters</h2>
-              {activeFiltersCount > 0 && (
-                <Badge variant="secondary" className="ml-2">
-                  {activeFiltersCount}
-                </Badge>
-              )}
+              <span>Filter Deals</span>
             </div>
-            <div className="flex items-center gap-2">
-              {activeFiltersCount > 0 && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={clearAllFilters}
-                  className="text-xs"
-                >
-                  Clear All
-                </Button>
-              )}
+            {activeFiltersCount > 0 && (
               <Button 
                 variant="ghost" 
-                size="icon" 
-                onClick={onClose}
-                className="lg:hidden"
+                size="sm" 
+                onClick={clearAllFilters}
+                className="text-xs"
               >
-                <X className="w-4 h-4" />
+                Clear All
               </Button>
-            </div>
-          </div>
+            )}
+          </DialogTitle>
+        </DialogHeader>
 
-          {/* Filter Sections */}
-          <div className="space-y-6">
-            {/* Categories */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          {/* Categories */}
+          <div className="space-y-4">
             <Collapsible open={openSections.categories}>
               <CollapsibleTrigger 
                 className="flex items-center justify-between w-full text-left font-medium"
@@ -132,44 +122,17 @@ export const FilterSidebar = ({ isOpen, onClose, selectedFilters, onFilterChange
                 <ChevronDown className={`w-4 h-4 transition-transform ${openSections.categories ? 'rotate-180' : ''}`} />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3">
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2">
                   {categories.map(category => (
                     <button
                       key={category}
                       onClick={() => toggleCategory(category)}
                       className={`
-                        filter-button w-full text-left text-sm
+                        filter-button text-left text-sm p-2
                         ${selectedFilters.categories.includes(category) ? 'active' : ''}
                       `}
                     >
                       {category}
-                    </button>
-                  ))}
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Sources */}
-            <Collapsible open={openSections.sources}>
-              <CollapsibleTrigger 
-                className="flex items-center justify-between w-full text-left font-medium"
-                onClick={() => toggleSection('sources')}
-              >
-                Sources
-                <ChevronDown className={`w-4 h-4 transition-transform ${openSections.sources ? 'rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-3">
-                <div className="space-y-2">
-                  {sources.map(source => (
-                    <button
-                      key={source}
-                      onClick={() => toggleSource(source)}
-                      className={`
-                        filter-button w-full text-left text-sm
-                        ${selectedFilters.sources.includes(source) ? 'active' : ''}
-                      `}
-                    >
-                      {source}
                     </button>
                   ))}
                 </div>
@@ -192,11 +155,40 @@ export const FilterSidebar = ({ isOpen, onClose, selectedFilters, onFilterChange
                       key={discount}
                       onClick={() => onFilterChange({ ...selectedFilters, discountMin: discount })}
                       className={`
-                        filter-button text-sm
+                        filter-button text-sm p-2
                         ${selectedFilters.discountMin === discount ? 'active' : ''}
                       `}
                     >
                       {discount}%+
+                    </button>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
+
+          {/* Sources and Rating */}
+          <div className="space-y-4">
+            <Collapsible open={openSections.sources}>
+              <CollapsibleTrigger 
+                className="flex items-center justify-between w-full text-left font-medium"
+                onClick={() => toggleSection('sources')}
+              >
+                Sources
+                <ChevronDown className={`w-4 h-4 transition-transform ${openSections.sources ? 'rotate-180' : ''}`} />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-3">
+                <div className="space-y-2">
+                  {sources.map(source => (
+                    <button
+                      key={source}
+                      onClick={() => toggleSource(source)}
+                      className={`
+                        filter-button w-full text-left text-sm p-2
+                        ${selectedFilters.sources.includes(source) ? 'active' : ''}
+                      `}
+                    >
+                      {source}
                     </button>
                   ))}
                 </div>
@@ -219,7 +211,7 @@ export const FilterSidebar = ({ isOpen, onClose, selectedFilters, onFilterChange
                       key={rating}
                       onClick={() => onFilterChange({ ...selectedFilters, rating })}
                       className={`
-                        filter-button w-full text-left text-sm
+                        filter-button w-full text-left text-sm p-2
                         ${selectedFilters.rating === rating ? 'active' : ''}
                       `}
                     >
@@ -233,7 +225,19 @@ export const FilterSidebar = ({ isOpen, onClose, selectedFilters, onFilterChange
             </Collapsible>
           </div>
         </div>
-      </div>
-    </>
+
+        <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Close
+          </Button>
+          <Button 
+            className="hero-button"
+            onClick={() => onOpenChange(false)}
+          >
+            Apply Filters
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };

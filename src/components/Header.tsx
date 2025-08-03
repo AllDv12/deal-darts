@@ -1,4 +1,4 @@
-import { Search, Menu, Heart, Flame } from "lucide-react";
+import { Search, Heart, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -43,14 +43,6 @@ export const Header = ({ searchTerm, onSearchChange, onMenuClick, dealsCount }: 
           <div className="flex items-center gap-2">
             <Button variant="outline" size="icon" className="hover-lift">
               <Heart className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="lg:hidden hover-lift"
-              onClick={onMenuClick}
-            >
-              <Menu className="w-4 h-4" />
             </Button>
           </div>
         </div>
