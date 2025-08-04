@@ -1,73 +1,96 @@
-# Welcome to your Lovable project
+# Deal Darts - Discover the Hottest Online Deals
 
-## Project info
+![Deal Darts](./public/hero-background.jpg)
 
-**URL**: https://lovable.dev/projects/8cf403fc-19db-477a-8f1d-0aeeae1bdd19
+Deal Darts is a modern web application that aggregates the best deals from various online retailers, helping users find amazing discounts all in one place.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Real-time Deal Updates**: Get the latest deals as they become available
+- **Verified Deals**: All deals are checked for authenticity
+- **Price Comparison**: Compare prices across multiple stores
+- **Deal Filters**: Filter by category, store, discount percentage, and more
+- **Responsive Design**: Optimized for all devices from mobile to desktop
+- **Modern UI**: Built with a clean, elegant user interface
 
-**Use Lovable**
+## Technologies Used
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8cf403fc-19db-477a-8f1d-0aeeae1bdd19) and start prompting.
+This project is built with modern web technologies:
 
-Changes made via Lovable will be committed automatically to this repo.
+- **React** - Front-end library for building user interfaces
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Next-generation frontend tooling
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Re-usable UI components
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js (v16+)
+- npm or yarn
 
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone https://github.com/AllDv12/deal-darts
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd deal-darts
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
+# or with yarn
+yarn install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
+# or with yarn
+yarn dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+```
+deal-darts/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # UI components
+│   ├── data/            # Mock data and data utilities
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Utility functions
+│   ├── pages/           # Page components
+│   ├── App.tsx          # Main application component
+│   └── main.tsx         # Application entry point
+├── package.json         # Dependencies and scripts
+└── README.md            # Project documentation
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Contributing
 
-## What technologies are used for this project?
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-This project is built with:
+## Deployment
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+To build the application for production:
 
-## How can I deploy this project?
+```sh
+# Build the application
+npm run build
+# or with yarn
+yarn build
+```
 
-Simply open [Lovable](https://lovable.dev/projects/8cf403fc-19db-477a-8f1d-0aeeae1bdd19) and click on Share -> Publish.
+The build artifacts will be stored in the `dist/` directory, ready to be deployed to any static hosting service.
 
-## Can I connect a custom domain to my Lovable project?
+## License
 
-Yes, you can!
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Acknowledgments
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Icons from [Lucide Icons](https://lucide.dev/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
