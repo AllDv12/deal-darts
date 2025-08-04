@@ -44,16 +44,15 @@ export const ProductCard = ({ product, onBookmark, isBookmarked }: ProductCardPr
 
   const timeUntilExpiry = product.expiry ? new Date(product.expiry).getTime() - Date.now() : null;
   const hoursLeft = timeUntilExpiry ? Math.max(0, Math.floor(timeUntilExpiry / (1000 * 60 * 60))) : null;
-
   return (
-    <div className="deal-card group animate-fade-in">
+    <div className="deal-card group animate-fade-in hover:z-10">
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden bg-muted">
         {!imageError ? (
           <img
             src={product.image}
             alt={product.title}
-            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
+            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             onLoad={() => setImageLoaded(true)}
@@ -74,16 +73,15 @@ export const ProductCard = ({ product, onBookmark, isBookmarked }: ProductCardPr
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          <div className="deal-badge">
+          <div className="deal-badge animate-pulse-slow">
             -{product.discount}% OFF
           </div>
           {product.isHot && (
-            <Badge className="bg-destructive text-destructive-foreground">
+            <Badge className="bg-destructive text-destructive-foreground animate-pulse">
               🔥 HOT
             </Badge>
-          )}
-          {hoursLeft && hoursLeft < 24 && (
-            <Badge variant="outline" className="bg-warning/10 border-warning text-warning">
+          )}          {hoursLeft && hoursLeft < 24 && (
+            <Badge variant="outline" className="bg-warning/10 border-warning text-warning animate-pulse">
               <Clock className="w-3 h-3 mr-1" />
               {hoursLeft}h left
             </Badge>
@@ -96,15 +94,14 @@ export const ProductCard = ({ product, onBookmark, isBookmarked }: ProductCardPr
           size="icon"
           className={`absolute top-3 right-3 bg-white/90 hover:bg-white border-white/20 transition-all ${
             isBookmarked ? 'text-destructive' : 'text-muted-foreground hover:text-destructive'
-          }`}
+          } transform hover:scale-110`}
           onClick={(e) => {
             e.preventDefault();
             onBookmark(product.id);
           }}
         >
           <Heart className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
-        </Button>
-      </div>
+        </Button>      </div>
 
       {/* Content */}
       <div className="p-4 space-y-3">
@@ -115,7 +112,7 @@ export const ProductCard = ({ product, onBookmark, isBookmarked }: ProductCardPr
 
         {/* Rating */}
         <div className="flex items-center gap-2">
-          <div className="rating-stars">
+          <div className="rating-stars group-hover:animate-pulse-slow">
             {renderStars(product.rating)}
           </div>
           <span className="text-sm text-muted-foreground">
@@ -128,7 +125,7 @@ export const ProductCard = ({ product, onBookmark, isBookmarked }: ProductCardPr
           <span className="price-old">
             {formatPrice(product.oldPrice)}
           </span>
-          <span className="price-new">
+          <span className="price-new group-hover:animate-pulse-slow">
             {formatPrice(product.newPrice)}
           </span>
         </div>
@@ -141,7 +138,7 @@ export const ProductCard = ({ product, onBookmark, isBookmarked }: ProductCardPr
           
           <Button 
             size="sm" 
-            className="hero-button text-xs px-4 py-2"
+            className="hero-button text-xs px-4 py-2 transform transition-all group-hover:scale-105"
             onClick={() => window.open(product.dealLink, '_blank')}
           >
             <ExternalLink className="w-3 h-3 mr-1" />

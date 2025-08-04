@@ -1,87 +1,109 @@
 import { ArrowRight, Zap, Shield, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 interface HeroProps {
   onExploreDeals: () => void;
 }
 
 export const Hero = ({ onExploreDeals }: HeroProps) => {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    // Trigger animation after component mounts
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
-    <section className="relative py-20 lg:py-32 overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-success/5 rounded-3xl"></div>
-      <div className="absolute top-20 left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+    <section className="relative py-24 lg:py-32 overflow-hidden">
+      {/* Simple, elegant background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-secondary/5 z-0"></div>
       
-      <div className="relative container mx-auto px-4 text-center">
-        {/* Main Headline */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-success/10 border border-success/20 rounded-full text-success text-sm font-medium mb-6">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/hero-background.jpg" 
+          alt="Hero background" 
+          className="w-full h-full object-cover opacity-15"
+        />
+        <div className="absolute inset-0 bg-gradient-to-tr from-background/80 via-background/40 to-background/80"></div>
+      </div>
+      
+      {/* Subtle accent elements */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-primary"></div>
+      
+      {/* Content container */}
+      <div className={`relative container mx-auto px-4 z-10 transition-all duration-1000 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}>
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Tag line */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-card/60 border border-card-border rounded-full text-primary text-sm font-medium mb-8 backdrop-blur-sm shadow-sm">
             <Zap className="w-4 h-4" />
             <span>Live Deal Updates • Save up to 75%</span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+          {/* Main headline */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
             Find The{" "}
-            <span className="gradient-text animate-glow">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
               Hottest Deals
             </span>
             {" "}Online
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          {/* Subheading */}
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-10">
             Discover amazing discounts from Amazon, Walmart, eBay and more. 
             All verified deals in one place, updated every minute.
           </p>
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <Button 
-            size="lg" 
-            className="hero-button text-lg px-8 py-4"
-            onClick={onExploreDeals}
-          >
-            <span>Explore Deals</span>
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
           
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="text-lg px-8 py-4 hover-lift"
-          >
-            <Shield className="w-5 h-5 mr-2" />
-            How It Works
-          </Button>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
-              10,000+
-            </div>
-            <div className="text-muted-foreground">Active Deals</div>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+              onClick={onExploreDeals}
+            >
+              <span>Explore Deals</span>
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="text-lg px-8 py-6 border-2 rounded-xl hover:bg-card/50 hover:shadow-md transition-all backdrop-blur-sm"
+            >
+              <Shield className="w-5 h-5 mr-2" />
+              <span>How It Works</span>
+            </Button>
           </div>
           
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
-              50+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-3xl mx-auto border-t border-card-border pt-10">
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">10,000+</div>
+              <div className="text-muted-foreground">Active Deals</div>
             </div>
-            <div className="text-muted-foreground">Partner Stores</div>
-          </div>
-          
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
-              24/7
+            
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">50+</div>
+              <div className="text-muted-foreground">Partner Stores</div>
             </div>
-            <div className="text-muted-foreground">Real-time Updates</div>
+            
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">24/7</div>
+              <div className="text-muted-foreground">Real-time Updates</div>
+            </div>
           </div>
         </div>
-
+        
         {/* Features */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {[
             {
               icon: Zap,
@@ -101,14 +123,16 @@ export const Hero = ({ onExploreDeals }: HeroProps) => {
           ].map((feature, index) => (
             <div 
               key={feature.title}
-              className="deal-card p-6 text-center animate-slide-up"
-              style={{ animationDelay: `${index * 0.2}s` }}
+              className="bg-card/40 backdrop-blur-sm border border-card-border rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-all"
+              style={{ 
+                transitionDelay: `${index * 0.1}s`
+              }}
             >
-              <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary to-secondary p-3 text-white">
-                <feature.icon className="w-6 h-6" />
+              <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-r from-primary to-secondary p-3 text-white shadow-md">
+                <feature.icon className="w-full h-full" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-muted-foreground">
                 {feature.description}
               </p>
             </div>

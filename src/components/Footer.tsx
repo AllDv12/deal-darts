@@ -99,28 +99,7 @@ export const Footer = () => {
             <p className="text-xs text-muted-foreground mt-2">
               No spam, unsubscribe anytime.
             </p>
-          </div>
-        </div>
-
-        {/* Partner Stores */}
-        <div className="py-8 border-t border-card-border">
-          <h4 className="text-center font-semibold mb-6 text-muted-foreground">
-            Trusted Partner Stores
-          </h4>
-          <div className="flex flex-wrap items-center justify-center gap-8 opacity-60">
-            {[
-              "Amazon", "Walmart", "eBay", "Target", "Best Buy", 
-              "Costco", "Home Depot", "Macy's"
-            ].map(store => (
-              <div 
-                key={store}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              >
-                {store}
-              </div>
-            ))}
-          </div>
-        </div>
+          </div>        </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-card-border text-sm text-muted-foreground">
@@ -139,13 +118,6 @@ export const Footer = () => {
               Contact Us
             </a>
           </div>
-        </div>
-
-        {/* Made with love */}
-        <div className="text-center mt-6 pt-6 border-t border-card-border">
-          <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
-            Made with <Heart className="w-3 h-3 text-destructive fill-current" /> for deal hunters worldwide
-          </p>
         </div>
       </div>
     </footer>

@@ -4,6 +4,7 @@ import { FilterModal } from "@/components/FilterModal";
 import { ProductGrid } from "@/components/ProductGrid";
 import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
+import { PartnerStores } from "@/components/PartnerStores";
 import { mockProducts, getFilteredProducts } from "@/data/mockProducts";
 import { useToast } from "@/hooks/use-toast";
 
@@ -135,10 +136,12 @@ const Index = () => {
             onBookmark={handleBookmark}
             loading={loading}
             onLoadMore={handleLoadMore}
-            hasMore={hasMore}
-          />
+            hasMore={hasMore}          />
         </div>
       </main>
+
+      {/* Partner Stores Section */}
+      <PartnerStores className="mt-16" />
 
       {/* Footer */}
       <Footer />
