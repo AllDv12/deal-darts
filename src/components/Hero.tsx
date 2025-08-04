@@ -2,6 +2,7 @@ import { ArrowRight, Zap, Shield, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Counter } from "@/components/ui/counter";
 
 interface HeroProps {
   onExploreDeals: () => void;
@@ -84,21 +85,26 @@ export const Hero = ({ onExploreDeals }: HeroProps) => {
               </Link>
             </Button>
           </div>
-          
-          {/* Stats */}
+            {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-3xl mx-auto border-t border-card-border pt-10">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">10,000+</div>
+              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">
+                <Counter end={10000} suffix="+" duration={2500} />
+              </div>
               <div className="text-muted-foreground">Active Deals</div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">50+</div>
+              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">
+                <Counter end={50} suffix="+" duration={1800} />
+              </div>
               <div className="text-muted-foreground">Partner Stores</div>
             </div>
             
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">24/7</div>
+              <div className="text-3xl md:text-4xl font-bold mb-2 text-foreground">
+                <Counter end={24} suffix="/7" duration={1200} />
+              </div>
               <div className="text-muted-foreground">Real-time Updates</div>
             </div>
           </div>

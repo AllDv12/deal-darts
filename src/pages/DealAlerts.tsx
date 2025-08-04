@@ -5,6 +5,14 @@ import { Bell, PlusCircle, Tag, Trash2, Edit, Search, Save, X } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
 import { mockProducts } from "@/data/mockProducts";
 import { useToast } from "@/hooks/use-toast";
 
@@ -21,7 +29,7 @@ const DealAlerts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [newAlertKeyword, setNewAlertKeyword] = useState("");
   const [editingAlertId, setEditingAlertId] = useState<string | null>(null);
-  const [isAddingAlert, setIsAddingAlert] = useState(false);
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
 
   const { toast } = useToast();
   
@@ -113,8 +121,7 @@ const DealAlerts = () => {
       setEditingAlertId(id);
     }
   };
-  
-  const handleSaveAlert = () => {
+    const handleSaveAlert = () => {
     if (!alertForm.keyword.trim()) {
       toast({
         title: "Keyword Required",
@@ -173,12 +180,12 @@ const DealAlerts = () => {
       minDiscount: 10,
       isActive: true
     });
-    setIsAddingAlert(false);
+    setIsAlertDialogOpen(false);
   };
   
   const handleCancelEdit = () => {
     setEditingAlertId(null);
-    setIsAddingAlert(false);
+    setIsAlertDialogOpen(false);
     setAlertForm({
       keyword: "",
       category: "",
@@ -207,37 +214,36 @@ const DealAlerts = () => {
           <p className="text-xl text-muted-foreground mb-6">
             Set up custom alerts and get notified when deals matching your criteria are added.
             Never miss a deal on products you're interested in.
-          </p>
-          <Button 
+          </p>          <Button 
             onClick={() => {
-              setIsAddingAlert(true);
+              setIsAlertDialogOpen(true);
               setEditingAlertId(null);
+              setAlertForm({
+                keyword: "",
+                category: "",
+                brand: "",
+                minDiscount: 10,
+                isActive: true
+              });
             }}
             className="hero-button"
-            disabled={isAddingAlert || editingAlertId !== null}
           >
             <PlusCircle className="h-4 w-4 mr-2" />
             Create New Alert
           </Button>
         </div>
         
-        {/* Alert Form */}
-        {(isAddingAlert || editingAlertId !== null) && (
-          <div className="bg-card border border-card-border rounded-xl p-6 shadow-sm mb-8 animate-fade-in">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">
-                {editingAlertId ? "Edit Alert" : "Create New Alert"}
-              </h2>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                onClick={handleCancelEdit}
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
+        {/* Alert Dialog */}
+        <Dialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>{editingAlertId ? "Edit Alert" : "Create New Alert"}</DialogTitle>
+              <DialogDescription>
+                Get notified when deals matching your criteria are added.
+              </DialogDescription>
+            </DialogHeader>
             
-            <div className="space-y-4">
+            <div className="space-y-4 py-4">
               {/* Keyword */}
               <div>
                 <label className="block mb-2 font-medium">
@@ -316,20 +322,20 @@ const DealAlerts = () => {
                   <span>{alertForm.isActive ? 'Active' : 'Disabled'}</span>
                 </div>
               </div>
-              
-              <Button 
-                onClick={handleSaveAlert}
-                className="w-full hero-button mt-4"
-              >
+            </div>
+            
+            <DialogFooter>
+              <Button variant="outline" onClick={handleCancelEdit}>Cancel</Button>
+              <Button onClick={handleSaveAlert} className="hero-button">
                 <Save className="h-4 w-4 mr-2" />
                 {editingAlertId ? "Update Alert" : "Create Alert"}
               </Button>
-            </div>
-          </div>
-        )}
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         
         {/* Search/Filter */}
-        {alerts.length > 0 && !isAddingAlert && editingAlertId === null && (
+        {alerts.length > 0 && (
           <div className="mb-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -353,10 +359,19 @@ const DealAlerts = () => {
               <h3 className="text-xl font-semibold mb-2">No alerts created yet</h3>
               <p className="text-muted-foreground max-w-md mx-auto mb-6">
                 Create your first alert to get notified when deals matching your interests are added.
-              </p>
-              <Button 
+              </p>              <Button 
                 className="hero-button"
-                onClick={() => setIsAddingAlert(true)}
+                onClick={() => {
+                  setIsAlertDialogOpen(true);
+                  setEditingAlertId(null);
+                  setAlertForm({
+                    keyword: "",
+                    category: "",
+                    brand: "",
+                    minDiscount: 10,
+                    isActive: true
+                  });
+                }}
               >
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Create Your First Alert
@@ -406,11 +421,13 @@ const DealAlerts = () => {
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-2">
-                        <Button
+                      <div className="flex items-center gap-2">                        <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleEditAlert(alert.id)}
+                          onClick={() => {
+                            handleEditAlert(alert.id);
+                            setIsAlertDialogOpen(true);
+                          }}
                           className="h-8 w-8"
                         >
                           <Edit className="h-4 w-4" />
@@ -472,12 +489,16 @@ const DealAlerts = () => {
               Want to get notified for any deal from a specific brand or category?
             </p>
             <Button 
-              className="hero-button"
-              onClick={() => {
-                setIsAddingAlert(true);
+              className="hero-button"              onClick={() => {
+                setIsAlertDialogOpen(true);
                 setEditingAlertId(null);
-              }}
-              disabled={isAddingAlert}
+                setAlertForm({
+                  keyword: "",
+                  category: "",
+                  brand: "",
+                  minDiscount: 10,
+                  isActive: true
+                });              }}
             >
               <PlusCircle className="h-4 w-4 mr-2" />
               Create New Alert

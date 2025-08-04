@@ -33,6 +33,7 @@ const Index = () => {
   // Paginated products for display
   const displayedProducts = filteredProducts.slice(0, displayedCount);
   const hasMore = displayedCount < filteredProducts.length;
+
   const handleBookmark = (productId: string) => {
     const isNowBookmarked = toggleBookmark(productId);
     
@@ -83,18 +84,20 @@ const Index = () => {
       
       <main className="px-6">
         <div className="container mx-auto max-w-7xl">
-          {/* Filter Bar & Results Summary */}
-          <div ref={productsRef} className="mb-8 space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">
-                  {searchTerm ? `Search Results for "${searchTerm}"` : "Today's Hot Deals"}
-                </h2>
-                <p className="text-muted-foreground">
-                  {filteredProducts.length} deals found • Updated minutes ago
-                </p>
-              </div>
-              
+          {/* Title and Search Results */}
+          <div ref={productsRef} className="mt-8 mb-4">
+            {/* Centered Title */}
+            <div className="flex flex-col items-center text-center">
+              <h2 className="text-3xl font-bold mb-3">
+                {searchTerm ? `Search Results for "${searchTerm}"` : "Today's Hot Deals"}
+              </h2>
+              <p className="text-muted-foreground">
+                {filteredProducts.length} deals found • Updated minutes ago
+              </p>
+            </div>
+            
+            {/* Filter Button */}
+            <div className="flex justify-end mb-4">
               <FilterModal
                 selectedFilters={filters}
                 onFilterChange={setFilters}
@@ -105,7 +108,7 @@ const Index = () => {
 
             {/* Results Summary */}
             {(searchTerm || filters.categories.length > 0 || filters.sources.length > 0 || filters.discountMin > 0 || filters.rating > 0) && (
-              <div className="p-4 bg-card rounded-xl border border-card-border">
+              <div className="p-4 bg-card rounded-xl border border-card-border mb-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-medium">{filteredProducts.length} deals found</span>
@@ -132,7 +135,8 @@ const Index = () => {
             onBookmark={handleBookmark}
             loading={loading}
             onLoadMore={handleLoadMore}
-            hasMore={hasMore}          />
+            hasMore={hasMore}
+          />
         </div>
       </main>
 
