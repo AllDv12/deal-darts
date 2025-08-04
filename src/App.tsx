@@ -3,8 +3,15 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import HowItWorks from "./pages/HowItWorks";
+import HotDeals from "./pages/HotDeals";
+import Categories from "./pages/Categories";
+import TopBrands from "./pages/TopBrands";
+import PriceTracker from "./pages/PriceTracker";
+import DealAlerts from "./pages/DealAlerts";
 
 const queryClient = new QueryClient();
 
@@ -14,8 +21,15 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/hot-deals" element={<HotDeals />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/top-brands" element={<TopBrands />} />
+          <Route path="/price-tracker" element={<PriceTracker />} />
+          <Route path="/deal-alerts" element={<DealAlerts />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

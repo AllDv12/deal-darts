@@ -1,6 +1,7 @@
 import { Heart, Mail, Globe, Github, Twitter, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -16,7 +17,7 @@ export const Footer = () => {
               <div className="p-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-white">
                 <Heart className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold gradient-text">HotDeals</h3>
+              <h3 className="text-xl font-bold gradient-text">Deal Darts</h3>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed mb-4">
               Your trusted partner for finding the best deals online. Save time and money with our curated collection of verified discounts.
@@ -38,43 +39,61 @@ export const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
-              {[
-                "Hot Deals",
-                "Categories", 
-                "Top Brands",
-                "Price Tracker",
-                "Deal Alerts"
-              ].map(link => (
-                <li key={link}>
-                  <a 
-                    href="#" 
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link 
+                  to="/hot-deals" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Hot Deals
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/categories" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Categories
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/top-brands" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Top Brands
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/price-tracker" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Price Tracker
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/deal-alerts" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Deal Alerts
+                </Link>
+              </li>
             </ul>
           </div>
-
+          
           {/* Categories */}
           <div>
             <h4 className="font-semibold mb-4">Categories</h4>
             <ul className="space-y-2 text-sm">
-              {[
-                "Electronics",
-                "Fashion",
-                "Home & Garden",
-                "Sports",
-                "Beauty"
-              ].map(category => (
+              {["Electronics", "Fashion", "Home & Garden", "Sports", "Beauty"].map(category => (
                 <li key={category}>
-                  <a 
-                    href="#" 
+                  <Link 
+                    to={`/categories?category=${category}`}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     {category}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -99,12 +118,13 @@ export const Footer = () => {
             <p className="text-xs text-muted-foreground mt-2">
               No spam, unsubscribe anytime.
             </p>
-          </div>        </div>
+          </div>
+        </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-card-border text-sm text-muted-foreground">
           <div className="flex items-center gap-4 mb-4 md:mb-0">
-            <span>© {currentYear} HotDeals. All rights reserved.</span>
+            <span>© {currentYear} Deal Darts. All rights reserved.</span>
           </div>
           
           <div className="flex items-center gap-6">
@@ -116,8 +136,7 @@ export const Footer = () => {
             </a>
             <a href="#" className="hover:text-primary transition-colors">
               Contact Us
-            </a>
-          </div>
+            </a>          </div>
         </div>
       </div>
     </footer>
