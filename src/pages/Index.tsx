@@ -7,14 +7,15 @@ import { Footer } from "@/components/Footer";
 import { PartnerStores } from "@/components/PartnerStores";
 import { mockProducts, getFilteredProducts } from "@/data/mockProducts";
 import { useToast } from "@/hooks/use-toast";
+import { useBookmarks } from "@/hooks/use-bookmarks";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const [bookmarkedProducts, setBookmarkedProducts] = useState<Set<string>>(new Set());
   const [displayedCount, setDisplayedCount] = useState(12);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { bookmarkedProducts, toggleBookmark } = useBookmarks();
 
   const [filters, setFilters] = useState({
     categories: [],
@@ -32,25 +33,20 @@ const Index = () => {
   // Paginated products for display
   const displayedProducts = filteredProducts.slice(0, displayedCount);
   const hasMore = displayedCount < filteredProducts.length;
-
   const handleBookmark = (productId: string) => {
-    setBookmarkedProducts(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-        toast({
-          title: "Removed from bookmarks",
-          description: "Deal removed from your saved items",
-        });
-      } else {
-        newSet.add(productId);
-        toast({
-          title: "Bookmarked!",
-          description: "Deal saved to your bookmarks",
-        });
-      }
-      return newSet;
-    });
+    const isNowBookmarked = toggleBookmark(productId);
+    
+    if (isNowBookmarked) {
+      toast({
+        title: "Bookmarked!",
+        description: "Deal saved to your bookmarks",
+      });
+    } else {
+      toast({
+        title: "Removed from bookmarks",
+        description: "Deal removed from your saved items",
+      });
+    }
   };
 
   const handleLoadMore = () => {

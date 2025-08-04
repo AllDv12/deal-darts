@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useBookmarks } from "@/hooks/use-bookmarks";
 
 interface HeaderProps {
   searchTerm: string;
@@ -14,6 +15,7 @@ interface HeaderProps {
 export const Header = ({ searchTerm, onSearchChange, onMenuClick, dealsCount }: HeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const { bookmarkedProducts } = useBookmarks();
     const navLinks = [
     { path: "/hot-deals", label: "Hot Deals" },
     { path: "/categories", label: "Categories" },
@@ -64,12 +66,22 @@ export const Header = ({ searchTerm, onSearchChange, onMenuClick, dealsCount }: 
               onChange={(e) => onSearchChange(e.target.value)}
               className="search-bar pl-12 transition-all duration-300 focus:shadow-md focus:scale-105"
             />
-          </div>
-
-          {/* Actions */}
+          </div>          {/* Actions */}
           <div className="flex items-center gap-2 animate-slide-left">
-            <Button variant="outline" size="icon" className="hover-lift transition-all hover:shadow-md hover:bg-card">
-              <Heart className="w-4 h-4" />
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="hover-lift transition-all hover:shadow-md hover:bg-card relative"
+              asChild
+            >
+              <Link to="/bookmarks">
+                <Heart className="w-4 h-4" />
+                {bookmarkedProducts.size > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {bookmarkedProducts.size > 9 ? '9+' : bookmarkedProducts.size}
+                  </span>
+                )}
+              </Link>
             </Button>
             
             {/* Mobile Menu Button */}

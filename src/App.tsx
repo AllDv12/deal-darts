@@ -12,6 +12,7 @@ import Categories from "./pages/Categories";
 import TopBrands from "./pages/TopBrands";
 import PriceTracker from "./pages/PriceTracker";
 import DealAlerts from "./pages/DealAlerts";
+import Bookmarks from "./pages/Bookmarks";
 
 const queryClient = new QueryClient();
 
@@ -26,10 +27,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/hot-deals" element={<HotDeals />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/top-brands" element={<TopBrands />} />
+          <Route path="/categories" element={<Categories />} />          <Route path="/top-brands" element={<TopBrands />} />
           <Route path="/price-tracker" element={<PriceTracker />} />
           <Route path="/deal-alerts" element={<DealAlerts />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
